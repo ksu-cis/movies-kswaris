@@ -35,7 +35,16 @@ namespace Movies.Pages
             {
                 Movies = MovieDatabase.All;
             }
+            if(minIMDB != null)
+            {
+                Movies = MovieDatabse.FilterByMinIMDB(Movies, minIMDB)
+            }
             Movies = MovieDatabase.Search(search);
+
+        }
+        [BindProperty]
+        public float? minIMDB()
+        {
 
         }
     }
