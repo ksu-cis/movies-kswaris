@@ -3,5 +3,60 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
-<h1>Hello World</h1>
+    <form method="post">
+        <input type="text" name="search" />
+        <label>
+            <input type="checkbox" value="G" name="mpaa" />
+            Rated G
+        </label>
+        <label>
+            <input type="checkbox" value="PG" name="mpaa" />
+            Rated PG
+        </label>
+        <label>
+            <input type="checkbox" value="PG-13" name="mpaa" />
+            Rated PG-13
+        </label>
+        <label>
+            <input type="checkbox" value="R" name="mpaa" />
+            Rated R
+        </label>
+        <label>
+            <input type="checkbox" value="NC-17" name="mpaa" />
+            Rated NC-17
+        </label>
+        <input type="submit" name="Search" />
+    </form>
+<h1>MoVies</h1>
+@if (Model.Movies.Count == 0)
+{
+    <h2>No Results</h2>
+}
+@foreach (Movie movie in Model.Movies)
+{
+<div class="movie-entry">
+    <h2>
+        @movie.Title
+        @if(movie.Release_Year != null) { <span> (@movie.Release_Year)</span>}
+    </h2>
+    @if(movie.Major_Genre != null) {<div class="genre">@movie.Major_Genre</div>}
+    @if(movie.MPAA_Rating != null) {<div class="rating">Rated: @movie.MPAA_Rating</div>}
+    @if(movie.Director != null) {<div class="director">Directed By: @movie.Director</div>}
+    <div class="ratings">
+        @if (@movie.IMDB_Rating != null)
+        {
+        <div>
+            IMDB
+            <h3>@movie.IMDB_Rating</h3>
+        </div>
+        }
+        @if (@movie.Rotten_Tomatoes_Rating != null)
+        {
+        <div>
+            Rotten Tomatoes
+            <h3>@movie.Rotten_Tomatoes_Rating</h3>
+        </div>
+        }
+    </div>
+</div>
+}
