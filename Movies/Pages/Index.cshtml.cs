@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 
 namespace Movies.Pages
 {
@@ -11,6 +13,17 @@ namespace Movies.Pages
     {
 
         public MovieDatabase MovieDatabase = new MovieDatabase();
+        public MovieDatabase()
+        {
+            if(MovieDatabase == null)
+            {
+                using (StreamReader file = System.IO.File.OpenText("movies.json"))
+                {
+                    string json = file.ReadToEnd();
+                    MovieDatabase = JsonConvert.DeserializeObject<List<Movie>>(json);
+                }
+            }
+        }
         public List<Movie> Movies;
         public void OnGet()
         {
@@ -35,16 +48,11 @@ namespace Movies.Pages
             {
                 Movies = MovieDatabase.All;
             }
-            if(minIMDB != null)
+            if(minIMDB is float min)
             {
                 Movies = MovieDatabse.FilterByMinIMDB(Movies, minIMDB)
             }
             Movies = MovieDatabase.Search(search);
-
-        }
-        [BindProperty]
-        public float? minIMDB()
-        {
 
         }
     }
